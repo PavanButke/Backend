@@ -1,15 +1,4 @@
-const express = require('express');
-
-//create server
-
-const app=express();
-let port ='8080';
-app.listen(port, function(){
-    console.log(`server is listening on port ${port}`);
-
-});
-//types of request -> get post put delete
-
+/types of request -> get post put delete 
 app.get('/',(req,res)=>{
     console.log(req.hostname);
     console.log(req.path);
@@ -18,7 +7,7 @@ app.get('/',(req,res)=>{
     res.send('<h1>hello hi from backend </h1>');
 });
 let obj={
-    'name':'Pavan'
+    'name':'Abhishek'
 }
 app.get('/user',(req,res)=>{
     console.log('users');
