@@ -7,11 +7,11 @@ app.listen('5000',function(){
 
 app.use(express.json());
 
-app.use((req,res,next)=>{
-    //do some work
-    console.log('i am a middleware');
-    next();
-});
+// app.use((req,res,next)=>{
+//     //do some work
+//     console.log('i am a middleware');
+//     next();
+// });
 
 app.use(express.static('public'));
 const userRouter = express.Router();
@@ -28,11 +28,11 @@ userRouter
 .patch(updateUser)
 .delete(deleteUser);
 
-app.use((req,res,next)=>{
-    //do some work
-    console.log('i am a middleware 2nd time');
-    next();
-});
+// app.use((req,res,next)=>{
+//     //do some work
+//     console.log('i am a middleware 2nd time');
+//     next();
+// });
 
 userRouter
 .route('/:id')
