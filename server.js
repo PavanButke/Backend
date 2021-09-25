@@ -91,7 +91,7 @@ function signupUser(req,res)
     // let email=userDetails.email; => destructering this to
     
    let   {email,name,password}= req.body;
-    user.push({email,name,password});
+    // user.push({email,name,password});
     console.log('user',req.body);
     res.json({
         message:'user signedUp',
