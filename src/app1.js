@@ -10,7 +10,7 @@ app.use(express.static("Frontend_folder"));
 app.use(express.json());
 
 let content = JSON.parse(fs.readFileSync("./data.json"))
-// const userRouter = express.Router(); // express middleware
+const userRouter = express.Router(); // express middleware
 const authRouter = express.Router(); // express middleware
 
 // app.use('/user' , userRouter);
@@ -26,7 +26,7 @@ authRouter.route('/signup').post(bodyChecker , signupUser);
 
 
 
-// userRouter.route('/').get(getUsers).post(bodyChecker , createUser);
+userRouter.route('/').get(protectRoute, getUsers)
 
 
 
@@ -41,6 +41,33 @@ authRouter.route('/signup').post(bodyChecker , signupUser);
 //   res.json({message: content});
 
 // }
+
+authRouter.route("/signup")
+    .post(bodyChecker, signupUser);
+    authRouter.route("/login")
+    .post(bodyChecker, loginUser);
+
+    
+    function getUsers(req,res)
+    {
+      res.status(200).json({
+       ' message':content
+      })
+    }
+
+    function protectRoute(req,res,next)
+    {
+      console.log("reached body checker");
+
+      let isallowed= false;
+      if(isallowed)
+      {
+          next();
+      }else{
+        res.send("kindly login to access this resource")
+      }
+    }
+
 
 function bodyChecker(req,res, next){
   let body = req.body;
@@ -65,7 +92,7 @@ function bodyChecker(req,res, next){
    {
      let newUser = {name , email , password};
      content.push();
-     //saves data in data storage
+     //saves data in d ta storage
      fs.writeFileSync("data.json", JSON.stringify(content));
      res.status(201).json({
         cratedUser : newUser 
@@ -89,6 +116,29 @@ function bodyChecker(req,res, next){
 //     app.listen(8081, function () {
 //       console.log("server started");
 //   })
+
+function loginUser(req, res) {
+  let { email, password } = req.body;
+  let obj = content.find((obj) => {
+      return obj.email == email
+  })
+  if (!obj) {
+      return res.status(404).json({
+          message: "User not found"
+      })
+  }
+  if (obj.password == password) {
+
+      res.status(200).json({
+          message: "user logged In",
+          user: obj
+      })
+  } else {
+      res.status(422).json({
+          message: "password doesn't match"
+      })
+  }
+}
   
  app.listen(8081 , function(){
 
@@ -120,7 +170,7 @@ function bodyChecker(req,res, next){
 
   app.use(function (req, res){
 
-      res.status(404).sendFile(path.jpin(__dirname , "404.html"));
+      res.status(404).sendFile(path.join(__dirname , "Frontend_folder/404.html"));
   })
 
   
