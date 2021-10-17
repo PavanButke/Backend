@@ -51,7 +51,7 @@ authRouter.route("/signup")
     function getUsers(req,res)
     {
       res.status(200).json({
-       ' message':content
+       'message':content
       })
     }
 
@@ -59,11 +59,11 @@ authRouter.route("/signup")
     {
       console.log("reached body checker");
 
-      let isallowed= false;
+      let isallowed= true;
       if(isallowed)
       {
           next();
-      }else{
+      } else  {
         res.send("kindly login to access this resource")
       }
     }
@@ -93,10 +93,10 @@ function bodyChecker(req,res, next){
      let newUser = {name , email , password};
      content.push();
      //saves data in d ta storage
-     fs.writeFileSync("data.json", JSON.stringify(content));
+     fs.writeFileSync("./data.json", JSON.stringify(content));
      res.status(201).json({
         cratedUser : newUser 
-
+ 
      })
      
    }else{
@@ -130,7 +130,7 @@ function loginUser(req, res) {
   if (obj.password == password) {
 
       res.status(200).json({
-          message: "user logged In",
+          message: "user logged in",
           user: obj
       })
   } else {
@@ -145,6 +145,7 @@ function loginUser(req, res) {
     console.log("server started");
 
  })
+
 
 
   app.post("/", function(req , res , next){
@@ -170,7 +171,7 @@ function loginUser(req, res) {
 
   app.use(function (req, res){
 
-      res.status(404).sendFile(path.join(__dirname , "Frontend_folder/404.html"));
+      res.status(404).sendFile(path.join(__dirname , "404.html"));
   })
 
   
