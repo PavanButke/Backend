@@ -3,17 +3,22 @@ const express = require("express");
 const fs= require("fs");
 
 const path = require("path"); 
+const jwt = require('jsonwebtoken');
+const {JWT_SECRET} = require('./secrets');
+const cookiesParser = require('cookie-parser');
 
 const app= express();
 
 app.use(express.static("Frontend_folder"));
 app.use(express.json());
 
+app.use(cookiesParser());
+
 let content = JSON.parse(fs.readFileSync("./data.json"))
 const userRouter = express.Router(); // express middleware
 const authRouter = express.Router(); // express middleware
 
-// app.use('/user' , userRouter);
+// app.use('/user'd , userRouter);
 app.use('/auth' , authRouter);
 
 
@@ -57,16 +62,30 @@ authRouter.route("/signup")
 
     function protectRoute(req,res,next)
     {
-      console.log("reached body checker");
+      try{
+        console.log("reached body checker");
+        //cookie-parser
+        console.log("61", req.cookies);
 
-      let isallowed= true;
-      if(isallowed)
-      {
-          next();
-      } else  {
-        res.send("kindly login to access this resource")
+        let decryptedToken = jwt.verify(req.cookkies.JWT , JWT_SECRET);
+        console.log("68", decryptedToken)
+          if(decryptedToken)
+          {
+            next();
+
+          }else{
+            res.send("kindly login to access this resource");
+          }
+        }
+          catch (err)
+          {
+            res.status(200).json({
+              message: err.message
+            })
+          }
+
       }
-    }
+    
 
 
 function bodyChecker(req,res, next){
@@ -128,6 +147,15 @@ function loginUser(req, res) {
       })
   }
   if (obj.password == password) {
+
+      var token = jwt.sign({email: obj.email}, JWT_SECRET);
+      //header
+
+      console.log(token)
+
+      res.cookie("JWT" , token);
+      // sign with RSA SHA256
+      //res body 
 
       res.status(200).json({
           message: "user logged in",
