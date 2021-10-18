@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use(cookiesParser());
 
-let content = JSON.parse(fs.readFileSync("./data.json"))
+let content = JSON.parse(fs.readFileSync("./data.json"));
 const userRouter = express.Router(); // express middleware
 const authRouter = express.Router(); // express middleware
 
@@ -62,6 +62,22 @@ authRouter.route("/signup")
 
     function protectRoute(req,res,next)
     {
+      console.log("reached body checker");
+
+      console.log("61", req.cookies)
+      // jwt 
+      // -> verify everytime that if 
+      // you are bringing the token to get your response
+    //   let isallowed = true;
+    //   if (isallowed) {
+    //       next();
+    //   } else {
+    //       res.send("kindly login to access this resource ");
+    //   }
+    // }
+  
+
+
       try{
         console.log("reached body checker");
         //cookie-parser
@@ -84,7 +100,7 @@ authRouter.route("/signup")
             })
           }
 
-      }
+        }
     
 
 
@@ -148,7 +164,7 @@ function loginUser(req, res) {
   }
   if (obj.password == password) {
 
-      var token = jwt.sign({email: obj.email}, JWT_SECRET);
+      let token = jwt.sign({email: obj.email}, JWT_SECRET);
       //header
 
       console.log(token)
