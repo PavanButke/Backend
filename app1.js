@@ -1,11 +1,11 @@
 const express = require("express");
-
-const fs= require("fs");
-
-const path = require("path"); 
+const fs = require("fs");
+const path = require("path");
 const jwt = require('jsonwebtoken');
-const {JWT_SECRET} = require('./secrets');
+const { JWT_SECRET } = require("./secrets");
+
 const cookiesParser = require('cookie-parser');
+let userModel = require("./Models/userModel")
 
 const app= express();
 
@@ -18,12 +18,13 @@ let content = JSON.parse(fs.readFileSync("./data.json"));
 const userRouter = express.Router(); // express middleware
 const authRouter = express.Router(); // express middleware
 
-// app.use('/user'd , userRouter);
-app.use('/auth' , authRouter);
+// app.use('/user'd , userRouter); 
+app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
 
 
 
-authRouter.route('/signup').post(bodyChecker , signupUser);
+// authRouter.route('/signup').post(bodyChecker , signupUser);
 
 
 
@@ -119,28 +120,21 @@ function bodyChecker(req,res, next){
     }
   }
 
- function signupUser(req, res) // signup ki process
+async function signupUser(req, res) // signup ki process
  {
-   let {name , email , password , confirmPassword}=req.body; // request 
-  
-   if(password == confirmPassword)
-   {
-     let newUser = {name , email , password};
-     content.push();
-     //saves data in d ta storage
-     fs.writeFileSync("./data.json", JSON.stringify(content));
-     res.status(201).json({
-        cratedUser : newUser 
- 
-     })
-     
-   }else{
-        res.status(422).json({
-            message: " Password and Confirm password do not match"
+  try {
+    let newUser = await userModel.create(req.body);
+    res.status(200).json({
+        "message": "user created successfully",
+        user: newUser
+    })
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+        message: err.message
+    })
 
-        })
-
-   }
+}
 
  }
 

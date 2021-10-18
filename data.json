@@ -1,17 +1,1 @@
-[
-    {
-        "name": "Alexis",
-        "email": "abcd@gmail.com",
-        "password": "12345647"
-    },
-    {
-        "name": "Alexis",
-        "email": "abcdz@gmail.com",
-        "password": "12345647"
-    },
-    {
-        "name": "KingKong",
-        "email": "jassipaji@gmail.com",
-        "password": "1234444"
-    }
-]
+[{"name":"Alexis","email":"abcd@gmail.com","password":"12345647"},{"name":"Alexis","email":"abcdz@gmail.com","password":"12345647"},{"name":"KingKong","email":"jassipaji@gmail.com","password":"1234444"}]
